@@ -1,0 +1,43 @@
+#!/usr/bin/python
+import argparse
+import sys
+import os
+import functools
+
+def output_content(files, output):
+    mapping = functools.reduce(lambda m, f: (m, m[os.path.splitext(f.name)[1]].append(f))[0], 
+                               files, {'.html':[], '.css':[], '.js':[]})
+
+    output.write('''<html>
+        <head>
+            <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+            {css}
+            {js}
+        </head>
+        <body>{html}</body>
+    </html>'''.format(css=''.join('<style>' + f.read() + '</style>'  for f in mapping['.css']),
+                      js=''.join('<script>' + f.read() + '</script>' for f in mapping['.js']),
+                      html=''.join(f.read() for f in mapping['.html'])))
+
+def parse_args(): 
+    parser = argparse.ArgumentParser(
+                description='''
+                            Generates the html file for the Carbuncle widget, with CSS and JavaScript
+                            plugged in.
+                            '''
+             )
+    parser.add_argument('files', metavar='file.(html|css|js)', type=argparse.FileType('r'), nargs='+',
+                        help='''
+                             The template files. Can be one or more html, css or js files.
+                             ''')
+    parser.add_argument('-o', '--output', metavar='output.html', default=sys.stdout, type=argparse.FileType('w'), nargs='?',
+                        help='''
+                             The output html file. CSS and JavaScript are embeded. Outputs
+                             to standard output if not specified.
+                             ''')
+
+    return parser.parse_args()
+
+if __name__ == '__main__':
+    output_content(**vars(parse_args()))
+

@@ -1,0 +1,28 @@
+@function reverse($list) {
+    $rlist: ();
+    @each $elm in $list {
+        $rlist: join(($elm), $rlist);
+    }
+
+    @return $rlist;
+}
+
+@function pixelate($art, $color-map, $reverse: false, $offset-x: 0, $offset-y: 0) {
+    $now-y: $offset-y;
+
+    $shadows: ();
+    @each $row in $art {
+        $now-y: $now-y + 1em;
+        $now-x: $offset-x; 
+        @each $col in if($reverse, reverse($row), $row) {
+            $now-x: $now-x + 1em; 
+
+            $color: map-get($color-map, $col);
+            @if $color != null {
+                $shadows: append($shadows, $now-x $now-y 0 $color, comma);
+            }
+        }
+    };
+
+    @return $shadows;
+}

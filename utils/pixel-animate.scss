@@ -1,0 +1,7 @@
+@mixin pixel-animate($frames...) {
+    @for $frame-idx from 0 to length($frames) {
+        #{100% / length($frames) * $frame-idx} {
+            box-shadow: nth($frames, $frame-idx + 1);
+        }
+    }
+}
