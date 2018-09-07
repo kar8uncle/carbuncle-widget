@@ -1,109 +1,151 @@
-@import "utils/pixel-animate.scss";
-@import "frames/carby.scss";
+@import "utils/properties";
+@import "utils/pixel-animate";
+@import "frames/carby";
+
+// actual pixel size to be determined by font-size
+$pixel-size: 1em;
+
+body {
+    margin: 0;
+    position: relative;
+}
 
 .carby-box {
-    position: relative;
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    width: 32 * $pixel-size;
+    height: 24 * $pixel-size;
 }
 
 .carby {
-    // actual pixel size to be determined by font-size
-    $pixel-size: 1em;
-
     position: absolute;
     left: -$pixel-size; top: -$pixel-size;
     width: $pixel-size; height: $pixel-size;
 
-    @import "frames/carby-0.scss";
-    box-shadow: $carby-0;
+    transform-origin: (32 / 2 + 1) * $pixel-size;
+
+    @include properties(map-get($carby, carby-1));
 
     &.raise-hands {
         @keyframes raise-hands {
-            @include pixel-animate($carby-2);
+            @include pixel-animate(3);
         }
-        animation: raise-hands 0.15s steps(1, end);
+        animation: raise-hands 0.15s steps(1);
     }
 
     &.flap-ears {
         @keyframes flap-ears {
-            @include pixel-animate($carby-1);
+            @include pixel-animate(2);
         }
-        animation: flap-ears 0.1s steps(1, end) 4;
+        animation: flap-ears 0.1s steps(1) 4;
     }
 
     &.turn-around {
         @keyframes turn-around {
-            @include pixel-animate($carby-3, $carby-4, 
-                                   $carby-5, $carby-6, $carby-7, $carby-6-rev, 
-                                   $carby-5, $carby-6, $carby-7, $carby-6-rev,
-                                   $carby-5, $carby-6, $carby-7, $carby-6-rev
+            @include pixel-animate(4, 5, 
+                                   6, 7, 8, 7-rev, 
+                                   6, 7, 8, 7-rev,
+                                   6, 7, 8, 7-rev
                                    );
         }
-        animation: turn-around 1s steps(1, end);
+        animation: turn-around 1s steps(1);
+    }
+
+    &.low-jump {
+        @keyframes low-jump {
+            @include pixel-animate(3, 1, 1,
+                                   5, 5, 4,
+                                   6, 6, 6, 6);
+        }
+        animation: low-jump 1.5s steps(1);
+    }
+
+    &.high-jump {
+        @keyframes high-jump {
+            @include pixel-animate(3, 1, 1,
+                                   5, 4,
+                                   6, 7, 8, 7-rev, 
+                                   6, 7, 8, 7-rev,
+                                   6, 7, 8, 7-rev
+                                   4, 4, 5);
+        }
+        animation: high-jump 1.5s steps(1);
     }
 
     &.open-mouth {
         @keyframes open-mouth {
-            @include pixel-animate($carby-8, $carby-9, $carby-10);
+            @include pixel-animate(9, 10, 11);
         }
-        animation: open-mouth 0.5s steps(1, end) 2 alternate;
+        animation: open-mouth 0.5s steps(1) 2 alternate;
     }
 
     &.compress {
         @keyframes compress {
-            @include pixel-animate($carby-11, $carby-12);
+            @include pixel-animate(12, 13, 13);
         }
-        animation: compress 0.25s steps(1, end) 2 alternate;
+        animation: compress 0.25s steps(1) 2 alternate;
     }
 
-    &.dance-open-mouth {
-        @keyframes dance-open-mouth {
-            @include pixel-animate($carby-13, $carby-14,
-                                   $carby-13-rev, $carby-14-rev)
+    &.compress-stretch {
+        @keyframes compress-stretch {
+            @include pixel-animate(3, 5, 12, 13, 13, 12, 5, 6, 6, 6);
         }
-        animation: dance-open-mouth 0.5s steps(1, end) 3;
+        animation: compress-stretch 1s steps(1);
+    }
+
+    &.dance-open-mouth-slow {
+        @keyframes dance-open-mouth-slow {
+            @include pixel-animate(14, 15, 14, 1,
+                                   14-rev, 15-rev, 14-rev, 1);
+        }
+        animation: dance-open-mouth-slow 1s steps(1) 3;
+    }
+
+    &.dance-open-mouth-fast {
+        @keyframes dance-open-mouth-fast {
+            @include pixel-animate(14, 1, 14-rev, 1);
+        }
+        animation: dance-open-mouth-fast 0.8s steps(1) 3;
     }
 
     &.swing-butt {
         @keyframes swing-butt {
-            @include pixel-animate($carby-2, 
-                                   $carby-7, $carby-7-rev,
-                                   $carby-7, $carby-7-rev,
-                                   $carby-7, $carby-7-rev,
-                                   $carby-7, $carby-7-rev,
-                                   $carby-7, $carby-7-rev)
+            @include pixel-animate(3, 
+                                   8, 8-rev,
+                                   8, 8-rev,
+                                   8, 8-rev,
+                                   8, 8-rev,
+                                   8, 8-rev)
         }
-        animation: swing-butt 1.5s steps(1, end);
+        animation: swing-butt 1.5s steps(1);
     }
 
     &.dance {
         @keyframes dance {
-            @include pixel-animate($carby-15, $carby-16, $carby-15,
-                                   $carby-15-rev, $carby-16-rev, $carby-15-rev);
+            @include pixel-animate(16, 17, 16,
+                                   16-rev, 17-rev, 16-rev);
         }
-        animation: dance 1s steps(1, end) 3;
+        animation: dance 1.2s steps(1) 3;
     }
 
     &.yawn {
         @keyframes yawn {
-            @include pixel-animate($carby-17, $carby-18,
-                                   $carby-19, $carby-20,
-                                   $carby-19, $carby-20,
-                                   $carby-19, $carby-20,
-                                   $carby-18, $carby-18);
+            @include pixel-animate(18, 19,
+                                   20, 21,
+                                   20, 21,
+                                   20, 21,
+                                   19, 19);
         }
-        animation: yawn 1.5s steps(1, end);
+        animation: yawn 1.5s steps(1);
     }
 
     &.lick {
         @keyframes lick {
-            @include pixel-animate($carby-8, $carby-21,
-                                   $carby-22, $carby-23,
-                                   $carby-22, $carby-23,
-                                   $carby-22, $carby-23,
-                                   $carby-22, $carby-23,
-                                   $carby-21, $carby-8
+            @include pixel-animate(9, 22,
+                                   23, 24,
+                                   23, 24,
+                                   23, 24,
+                                   23, 24,
+                                   22, 9
                                    );
         }
         animation: lick 1s steps(1, end);
@@ -111,54 +153,121 @@
 
     &.sleep {
         @keyframes sleep {
-            @include pixel-animate($carby-2,
-                                   $carby-24, $carby-25,
-                                   $carby-24, $carby-25,
-                                   $carby-24, $carby-25,
-                                   $carby-24, $carby-25,
-                                   $carby-24, $carby-25,
-                                   $carby-26);
+            @include pixel-animate(3,
+                                   25, 26,
+                                   25, 26,
+                                   25, 26,
+                                   25, 26,
+                                   25, 26,
+                                   27);
         }
-        animation: sleep 4s steps(1, end);
+        animation: sleep 4s steps(1);
     }
 
     &.doze-off {
         @keyframes doze-off {
-            @include pixel-animate($carby-2,
-                                   $carby-27, $carby-28,
-                                   $carby-27, $carby-28,
-                                   $carby-27, $carby-28,
-                                   $carby-28, $carby-29,
-                                   $carby-30, $carby-3);
+            @include pixel-animate(3,
+                                   28, 29,
+                                   28, 29,
+                                   28, 29,
+                                   29, 30,
+                                   31, 4);
         }
-        animation: doze-off 4s steps(1, end);
+        animation: doze-off 4s steps(1);
     }
 
-    &.kick {
-        @keyframes kick {
-            @include pixel-animate($carby-2,
-                                   $carby-3, $carby-31,
-                                   $carby-3, $carby-31,
-                                   $carby-3, $carby-31,
-                                   $carby-3, $carby-31,
-                                   $carby-3, $carby-31,
-                                   $carby-3, $carby-31,
-                                   $carby-3, $carby-31,
-                                   $carby-3, $carby-31,
-                                   $carby-3, $carby-31);
+    &.kick-right {
+        @keyframes kick-right {
+            @include pixel-animate(3,
+                                   4, 32,
+                                   4, 32,
+                                   4, 32,
+                                   4, 32,
+                                   4, 32,
+                                   4, 32,
+                                   4, 32,
+                                   4, 32,
+                                   4, 32);
         }
-        animation: kick 1.2s steps(1, end);
+        animation: kick-right 1.2s steps(1);
+    }
+
+    &.kick-left {
+        @keyframes kick-left {
+            @include pixel-animate(3,
+                                   4, 32-rev,
+                                   4, 32-rev,
+                                   4, 32-rev,
+                                   4, 32-rev,
+                                   4, 32-rev,
+                                   4, 32-rev,
+                                   4, 32-rev);
+        }
+        animation: kick-left 1.2s steps(1);
     }
 
     &.walk-right {
         @keyframes walk-right {
-            @include pixel-animate($carby-2,
-                                   $carby-32, $carby-33,
-                                   $carby-32, $carby-34,
-                                   $carby-32, $carby-33,
-                                   $carby-32, $carby-34,
-                                   $carby-32, $carby-33);
+            @include pixel-animate(3,
+                                   33, 34,
+                                   33, 35,
+                                   33, 34,
+                                   33, 35,
+                                   33, 34);
         }
-        animation: walk-right 1.5s steps(1, end);
+        animation: walk-right 1.5s steps(1);
+    }
+
+    &.walk-left {
+        @keyframes walk-left {
+            @include pixel-animate(3,
+                                   33-rev, 34-rev,
+                                   33-rev, 35-rev,
+                                   33-rev, 34-rev,
+                                   33-rev, 35-rev,
+                                   33-rev, 34-rev);
+        }
+        animation: walk-left 1.5s steps(1);
+    }
+
+    &.slide-left {
+        @keyframes slide-left {
+            @include pixel-animate(3,
+                                   32, 36, 1,
+                                   32, 36, 1,
+                                   32, 36, 1,
+                                   32, 36);
+        }
+        animation: slide-left 1.8s steps(1);
+    }
+
+    &.slide-right {
+        @keyframes slide-right {
+            @include pixel-animate(3,
+                                   32-rev, 36-rev, 1,
+                                   32-rev, 36-rev, 1,
+                                   32-rev, 36-rev, 1,
+                                   32-rev, 36-rev);
+        }
+        animation: slide-right 1.8s steps(1);
+    }
+
+    &.stretch-legs {
+        @keyframes stretch-legs {
+            @include pixel-animate(3,
+                                   4, 32-rev, 36, 37, 38, 37, 38, 37, 38, 36, 32-rev, 4,
+                                   4, 32, 36-rev, 37-rev, 38-rev, 37-rev, 38-rev, 37-rev, 38-rev, 36-rev, 32, 4
+                                   );
+        }
+        animation: stretch-legs 2.5s steps(1);
+    }
+
+    &.squat {
+        @keyframes squat {
+            @include pixel-animate(3,
+                                   4, 5, 5,
+                                   4, 5, 5);
+        }
+        animation: squat 1.5s steps(1);
     }
 }
