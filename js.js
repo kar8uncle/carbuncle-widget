@@ -25,103 +25,83 @@ jQuery(function($) {
                       'low-jump', 'high-jump',
                      ];
 
+    let $carbyBox = $('.carby-box');
+    let $carby = $('.carby', $carbyBox);
+
     // defines extra mutating animations(e.g. translations) that plays with the css animations
     let animationBehaviors = (function() {
-        let maxX = 0;
-        let maxY = 0;
+        let px2em = function(px) {
+            // assuming 'font-size' return a pixel value, e.g. '10px'
+            let pxPerEm = + window.getComputedStyle(document.body).getPropertyValue('font-size').slice(0, -2);
+            return px / pxPerEm;
+        };
 
-        let updateMaxX = function(tween) {
-            if (tween.elem.getBoundingClientRect().right <= window.innerWidth) {
-                maxX = Math.max(0, Math.floor(tween.now));
-            }
+        let stepFn = function(emPerMovement, clampTo) {
+            return function(_, tween) {
+                tween.now = Math.floor(tween.now.clamp(0, clampTo) / emPerMovement) * emPerMovement;
+            };
         };
-        let updateMaxY = function(tween) {
-            if (tween.elem.getBoundingClientRect().height <= window.innerHeight) {
-                maxY = Math.max(0, Math.floor(tween.now));
-            }
-        };
+        let maxX = px2em(window.innerWidth - $carbyBox.width());
+        let maxY = px2em(window.innerHeight - $carbyBox.height());
+
         return {
-            'walk-right': function($carby) {
-                $carby
+            'walk-right': function() {
+                $carbyBox
                     .delay(0.15e3)
                     .animate({ 'left' : '+=16em' },
                              { 'duration' : 1.5e3 - 0.15e3,
                                'easing'   : 'linear',
-                               'step'     : function(left, tween) {
-                                                updateMaxX(tween);
-                                                tween.now = Math.floor(tween.now.clamp(0, maxX));
-                                            }
+                               'step'     : stepFn(1, maxX),
                              });
-            }, 'walk-left': function($carby) {
-                $carby
+            }, 'walk-left': function() {
+                $carbyBox
                     .delay(0.15e3)
                     .animate({ 'left' : '-=16em' },
                              { 'duration' : 1.5e3 - 0.15e3,
                                'easing'   : 'linear',
-                               'step'     : function(left, tween) {
-                                                updateMaxX(tween);
-                                                tween.now = Math.floor(tween.now.clamp(0, maxX));
-                                            }
+                               'step'     : stepFn(1, maxX),
                              });
-            }, 'slide-right': function($carby) {
-                $carby
+            }, 'slide-right': function() {
+                $carbyBox
                     .delay(0.15e3)
                     .animate({ 'left' : '+=18em' },
                              { 'duration' : 1.8e3 - 0.15e3,
                                'easing'   : 'linear',
-                               'step'     : function(left, tween) {
-                                                updateMaxX(tween);
-                                                tween.now = Math.floor(tween.now.clamp(0, maxX) / 4) * 4;
-                                            }
+                               'step'     : stepFn(4, maxX),
                              });
-            }, 'slide-left': function($carby) {
-                $carby
+            }, 'slide-left': function() {
+                $carbyBox
                     .delay(0.15e3)
                     .animate({ 'left' : '-=18em' },
                              { 'duration' : 1.8e3 - 0.15e3,
                                'easing'   : 'linear',
-                               'step'     : function(left, tween) {
-                                                updateMaxX(tween);
-                                                tween.now = Math.floor(tween.now.clamp(0, maxX) / 4) * 4;
-                                            }
+                               'step'     : stepFn(4, maxX),
                              });
-            }, 'high-jump': function($carby) {
-                $carby
+            }, 'high-jump': function() {
+                $carbyBox
                     .delay(0.375e3)
-                    .animate({ 'top' : '-=64em' },
+                    .animate({ 'top' : '-=' + Math.floor(Math.random() * 100) + 'em' },
                              { 'duration' : 0.45e3,
                                'easing'   : 'easeOutSine',
-                               'step'     : function(top, tween) {
-                                                updateMaxY(tween);
-                                                tween.now = Math.floor(tween.now.clamp(0, maxY));
-                                            }
+                               'step'     : stepFn(1, maxY),
                              })
-                    .animate({ 'top' : '+=64em' },
+                    .animate({ 'top' : '+=' + Math.floor(Math.random() * 100) + 'em' },
                              { 'duration' : 0.45e3,
                                'easing'   : 'easeInSine',
-                               'step'     : function(top, tween) {
-                                                updateMaxY(tween);
-                                                tween.now = Math.floor(tween.now.clamp(0, maxY));
-                                            }
+                               'step'     : stepFn(1, maxY),
                              });
-            }, 'low-jump': function($carby) {
-                $carby
+            }, 'low-jump': function() {
+                $carbyBox
                     .delay(0.9e3)
-                    .animate({ 'top' : '-=48em' },
+                    .animate({ 'top' : '-=' + Math.floor(Math.random() * 70) + 'em' },
                              { 'duration' : 0.3e3,
                                'easing'   : 'easeOutSine',
-                               'step'     : function(top, tween) {
-                                                updateMaxY(tween);
-                                                tween.now = Math.floor(tween.now.clamp(0, maxY));
-                                            }
+                               'step'     : stepFn(1, maxY),
                              })
-                    .animate({ 'top' : '+=48em' },
+                    .animate({ 'top' : '+=' + Math.floor(Math.random() * 70) + 'em' },
                              { 'duration' : 0.3e3,
                                'easing'   : 'easeInSine',
-                               'step'     : function(top, tween) {
-                                                updateMaxY(tween);
-                                                tween.now = Math.floor(tween.now.clamp(0, maxY));
-                                            }
+                               'step'     : stepFn(1, maxY),
                              });
             }
         };
@@ -129,8 +109,6 @@ jQuery(function($) {
 
     let minDelayMs = 0.3e3;
     let maxDelayMs = 4e3;
-    let $carbyBox = $('.carby-box');
-    let $carby = $('.carby', $carbyBox);
 
     // spawn Carbuncle to start at random position on the page
     $carbyBox.css({
@@ -147,6 +125,6 @@ jQuery(function($) {
                   this.offsetWidth;
                   setTimeout(animate, minDelayMs + Math.floor((maxDelayMs - minDelayMs) * Math.random()));
               });
-        (animationBehaviors[animation] || function() {})($carbyBox);
+        (animationBehaviors[animation] || function() {})();
     })();
 });
