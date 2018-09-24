@@ -41,8 +41,8 @@ jQuery(function($) {
                 tween.now = Math.floor(tween.now.clamp(0, clampTo) / emPerMovement) * emPerMovement;
             };
         };
-        let maxX = px2em(window.innerWidth - $carbyBox.width());
-        let maxY = px2em(window.innerHeight - $carbyBox.height());
+        let maxX = () => px2em(window.innerWidth - $carbyBox.width());
+        let maxY = () => px2em(window.innerHeight - $carbyBox.height());
 
         return {
             'walk-right': function() {
@@ -51,7 +51,7 @@ jQuery(function($) {
                     .animate({ 'left' : '+=16em' },
                              { 'duration' : 1.5e3 - 0.15e3,
                                'easing'   : 'linear',
-                               'step'     : stepFn(1, maxX),
+                               'step'     : stepFn(1, maxX()),
                              });
             }, 'walk-left': function() {
                 $carbyBox
@@ -59,7 +59,7 @@ jQuery(function($) {
                     .animate({ 'left' : '-=16em' },
                              { 'duration' : 1.5e3 - 0.15e3,
                                'easing'   : 'linear',
-                               'step'     : stepFn(1, maxX),
+                               'step'     : stepFn(1, maxX()),
                              });
             }, 'slide-right': function() {
                 $carbyBox
@@ -67,7 +67,7 @@ jQuery(function($) {
                     .animate({ 'left' : '+=18em' },
                              { 'duration' : 1.8e3 - 0.15e3,
                                'easing'   : 'linear',
-                               'step'     : stepFn(4, maxX),
+                               'step'     : stepFn(4, maxX()),
                              });
             }, 'slide-left': function() {
                 $carbyBox
@@ -75,7 +75,7 @@ jQuery(function($) {
                     .animate({ 'left' : '-=18em' },
                              { 'duration' : 1.8e3 - 0.15e3,
                                'easing'   : 'linear',
-                               'step'     : stepFn(4, maxX),
+                               'step'     : stepFn(4, maxX()),
                              });
             }, 'high-jump': function() {
                 $carbyBox
@@ -83,12 +83,12 @@ jQuery(function($) {
                     .animate({ 'top' : '-=' + Math.floor(Math.random() * 100) + 'em' },
                              { 'duration' : 0.45e3,
                                'easing'   : 'easeOutSine',
-                               'step'     : stepFn(1, maxY),
+                               'step'     : stepFn(1, maxY()),
                              })
                     .animate({ 'top' : '+=' + Math.floor(Math.random() * 100) + 'em' },
                              { 'duration' : 0.45e3,
                                'easing'   : 'easeInSine',
-                               'step'     : stepFn(1, maxY),
+                               'step'     : stepFn(1, maxY()),
                              });
             }, 'low-jump': function() {
                 $carbyBox
@@ -96,12 +96,12 @@ jQuery(function($) {
                     .animate({ 'top' : '-=' + Math.floor(Math.random() * 70) + 'em' },
                              { 'duration' : 0.3e3,
                                'easing'   : 'easeOutSine',
-                               'step'     : stepFn(1, maxY),
+                               'step'     : stepFn(1, maxY()),
                              })
                     .animate({ 'top' : '+=' + Math.floor(Math.random() * 70) + 'em' },
                              { 'duration' : 0.3e3,
                                'easing'   : 'easeInSine',
-                               'step'     : stepFn(1, maxY),
+                               'step'     : stepFn(1, maxY()),
                              });
             }
         };
